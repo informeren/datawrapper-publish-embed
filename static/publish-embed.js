@@ -1,7 +1,8 @@
+/* jshint globalstrict:true */
+/* global $:false, dw:false, require:false */
+
 require(['dw/chart/publish'], function() {
-
   $(function() {
-
     var action = $('.chart-actions .action-publish-embed'),
         modal;
 
@@ -19,7 +20,6 @@ require(['dw/chart/publish'], function() {
           titleChart = chart.get('title');
 
       $.get('/plugins/publish-embed/publish-embed.twig', function(data) {
-
         modal = $('<div class="publish-chart-action-modal modal hide">' + data + '</div>').modal();
 
         publish_chart(function(err) {
@@ -46,7 +46,6 @@ require(['dw/chart/publish'], function() {
           $('textarea#htmlArea').html(htmlCode);
           $('textarea#urlArea').html(urlCode);
         });
-
       });
 
       console.log(chart_url);
@@ -77,9 +76,7 @@ require(['dw/chart/publish'], function() {
             if (pending) setTimeout(checkStatus, 300);
           });
         }
-      };
+      }
     };
-
   });
-
 });
