@@ -35,7 +35,7 @@ require(['dw/chart/publish'], function () {
             throw err;
           }
 
-          var textileCode = 'p(artHtml5). "[Infográfico {{titleChart}} - Crédito: Editoria de Arte/Folhapress]":{{urlChart}}?w={{w}}&h={{h}}',
+          var textileCode = 'p(artHtml5). "[{{titleChart}}]":{{urlChart}}?w={{w}}&h={{h}}',
               htmlCode = '<iframe src="{{urlChart}}"  width="{{w}}" height="{{h}}" frameborder="0"  allowtransparency="true"  allowfullscreen="allowfullscreen" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" oallowfullscreen="oallowfullscreen" msallowfullscreen="msallowfullscreen"></iframe> ',
               urlCode = '{{urlChart}}';
 
@@ -57,8 +57,6 @@ require(['dw/chart/publish'], function () {
           $('textarea#urlArea').html(urlCode);
         });
       });
-
-      console.log(chart_url);
 
       function publish_chart(callback) {
         var pending = true;
