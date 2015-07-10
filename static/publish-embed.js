@@ -1,17 +1,25 @@
-/* jshint globalstrict:true */
-/* global $:false, dw:false, require:false */
+/*jshint globalstrict:true */
+/*jslint white:true */
+/*global $, console, dw, require, window */
 
-require(['dw/chart/publish'], function() {
-  $(function() {
-    var action = $('.chart-actions .action-publish-embed'),
-        modal;
+/*property
+    __chartCacheDomain, ajax, backend, click, currentChart, delay, done, error,
+    fadeIn, fadeOut, fail, get, getJSON, html, log, modal, preventDefault,
+    replace, setTimeout, type, url
+*/
 
-    $('a', action).click(function(e) {
+'use strict';
+
+require(['dw/chart/publish'], function () {
+  $(function () {
+    var action = $('.chart-actions .action-publish-embed');
+
+    $('a', action).click(function (e) {
       e.preventDefault();
       showModal();
     });
 
-    var showModal = function() {
+    var showModal = function () {
       var chart = dw.backend.currentChart,
           chart_id = chart.get('id'),
           chart_url = 'http://' + dw.backend.__chartCacheDomain + '/' + chart_id + '/',
@@ -19,11 +27,13 @@ require(['dw/chart/publish'], function() {
           h = chart.get('metadata.publish.embed-height'),
           titleChart = chart.get('title');
 
-      $.get('/plugins/publish-embed/publish-embed.twig', function(data) {
-        modal = $('<div class="publish-chart-action-modal modal hide">' + data + '</div>').modal();
+      $.get('/plugins/publish-embed/publish-embed.twig', function (data) {
+        $('<div class="publish-chart-action-modal modal hide">' + data + '</div>').modal();
 
-        publish_chart(function(err) {
-          if (err) throw err;
+        publish_chart(function (err) {
+          if (err) {
+            throw err;
+          }
 
           var textileCode = 'p(artHtml5). "[Infográfico {{titleChart}} - Crédito: Editoria de Arte/Folhapress]":{{urlChart}}?w={{w}}&h={{h}}',
               htmlCode = '<iframe src="{{urlChart}}"  width="{{w}}" height="{{h}}" frameborder="0"  allowtransparency="true"  allowfullscreen="allowfullscreen" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" oallowfullscreen="oallowfullscreen" msallowfullscreen="msallowfullscreen"></iframe> ',
@@ -61,21 +71,24 @@ require(['dw/chart/publish'], function() {
         $.ajax({
           url: '/api/charts/' + chart_id + '/publish?local=1',
           type: 'post'
-        }).done(function() {
+        }).done(function () {
           callback(null);
-        }).fail(function() {
+        }).fail(function () {
           console.error('failed');
           callback('publish failed');
           pending = false;
         });
-        // in the meantime, check status periodically
-        checkStatus();
 
         function checkStatus() {
-          $.getJSON('/api/charts/' + chart_id + '/publish/status', function(res) {
-            if (pending) setTimeout(checkStatus, 300);
+          $.getJSON('/api/charts/' + chart_id + '/publish/status', function (ignore) {
+            if (pending) {
+              window.setTimeout(checkStatus, 300);
+            }
           });
         }
+
+        // in the meantime, check status periodically
+        checkStatus();
       }
     };
   });
